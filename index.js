@@ -21,36 +21,64 @@ function playerSelection() {
 
 function playRound(playerSelection, computerSelection) {
   let result = "It's a tie!";
+  let whoWon = "tie";
   playerSelection = playerSelection.toLowerCase();
   computerSelection = computerSelection.toLowerCase();
-  if (playerSelection == computerSelection) return result;
+  if (playerSelection == computerSelection) return [result, whoWon];
 
   switch (playerSelection) {
     case "rock":
-      computerSelection == "paper"
-        ? (result = "You lost! Paper beats Rock")
-        : (result = "You win! Rock beats Scissors");
+      if (computerSelection == "paper") {
+        result = "You lost! Paper beats Rock";
+        whoWon = "computer";
+      } else {
+        whoWon = "player";
+        result = "You win! Rock beats Scissors";
+      }
       break;
-
     case "paper":
-      computerSelection == "scissors"
-        ? (result = "You lost! Scissors beats Paper")
-        : (result = "You win! Paper beats Rock");
-      break;
+      if (computerSelection == "scissors") {
+        result = "You lost! Scissors beats Paper";
+        whoWon = "computer";
+      } else {
+        whoWon = "player";
+        result = "You win! Paper beats Rock";
+      }
 
+      break;
     case "scissors":
-      computerSelection == "rock"
-        ? (result = "You lost! Rock beats Scissors")
-        : (result = "You win! Scissors beats Paper");
+      if (computerSelection == "rock") {
+        result = "You lost! Rock beats Scissors";
+        whoWon = "player";
+      } else {
+        whoWon = "player";
+        result = "You win! Scissors beats Paper";
+      }
       break;
     default:
+      whoWon = "nobody";
       result = "Game Aborted!";
   }
-  return result;
+  return [result, whoWon];
 }
 
-const player = playerSelection();
-const computer = computerPlay();
-console.log(`Player: ${player}\nComputer: ${computer}`);
+function game(playRound) {
+  let userCount = 0;
+  let computerCount = 0;
 
-console.log(playRound(player, computer));
+  for (let i = 1; i <= 5; i++) {
+    const player = playerSelection();
+    const computer = computerPlay();
+    const [result, whoWon] = playRound(player, computer);
+    if (whoWon == "player") userCount += 1;
+    if (whoWon == "computer") computerCount += 1;
+    console.log(`[${i}/5]`);
+    console.log(`Player: ${player}\nComputer: ${computer}`);
+    console.log(result);
+  }
+  if (userCount > computerCount) console.log("You won the round!");
+  if (userCount < computerCount) console.log("You lost the round!");
+  console.log(`Score:\n\tPlayer: ${userCount}\n\tComputer: ${computerCount}`);
+}
+
+game(playRound);
