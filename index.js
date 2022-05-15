@@ -3,30 +3,54 @@ function computerPlay() {
   return playsOptions[Math.floor(Math.random() * playsOptions.length)];
 }
 
+function playerSelection() {
+  const choice = prompt("type your play: \n1. Rock\n2. Paper\n3. Scissors");
+  switch (choice) {
+    case "1":
+      return "Rock";
+    case "2":
+      return "Paper";
+    case "3":
+      return "Scissors";
+    case null:
+      return "Player didn't choose";
+    default:
+      return choice;
+  }
+}
+
 function playRound(playerSelection, computerSelection) {
   let result = "It's a tie!";
+  playerSelection = playerSelection.toLowerCase();
+  computerSelection = computerSelection.toLowerCase();
   if (playerSelection == computerSelection) return result;
 
   switch (playerSelection) {
-    case "Rock":
-      computerSelection == "Paper"
+    case "rock":
+      computerSelection == "paper"
         ? (result = "You lost! Paper beats Rock")
         : (result = "You win! Rock beats Scissors");
       break;
 
-    case "Paper":
-      computerSelection == "Rock"
-        ? (result = "You win! Paper beats Rock")
-        : (result = "You lost! Scissors beats Paper");
+    case "paper":
+      computerSelection == "scissors"
+        ? (result = "You lost! Scissors beats Paper")
+        : (result = "You win! Paper beats Rock");
       break;
 
-    case "Scissors":
-      computerSelection == "Paper"
-        ? (result = "You win! Scissors beats Paper")
-        : (result = "You lost! Rock beats Scissors");
+    case "scissors":
+      computerSelection == "rock"
+        ? (result = "You lost! Rock beats Scissors")
+        : (result = "You win! Scissors beats Paper");
       break;
+    default:
+      result = "Game Aborted!";
   }
   return result;
 }
 
-console.log(playRound("Paper", computerPlay()));
+const player = playerSelection();
+const computer = computerPlay();
+console.log(`Player: ${player}\nComputer: ${computer}`);
+
+console.log(playRound(player, computer));
